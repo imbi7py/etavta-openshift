@@ -6,5 +6,5 @@ setup(name='ETAVTA-OS',
       author='Mahmoud Hashemi',
       author_email='mahmoudrhashemi@gmail.com',
       url='https://github.com/mahmoud/etavta-openshift',
-      install_requires=['clastic', 'mako'],
+      install_requires=['clastic>=0.2.1', 'mako'],
       )
