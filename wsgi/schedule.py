@@ -1,11 +1,17 @@
 from __future__ import unicode_literals
-from collections import namedtuple, defaultdict, OrderedDict, Iterable
-from itertools import chain
-from OrderedSet import OrderedSet
-import datetime as dt
+
 import re
 import os
 import warnings
+import datetime as dt
+from itertools import chain
+from collections import namedtuple, defaultdict, Iterable
+try:
+    from collections import OrderedDict
+except:
+    from OrderedDict import OrderedDict
+from OrderedSet import OrderedSet
+
 
 
 NORTH = 'North'
