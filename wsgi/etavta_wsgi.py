@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import os
+
 from werkzeug.exceptions import NotFound
 from clastic import Application, Middleware
 from clastic.render.mako_templates import MakoRenderFactory
@@ -8,7 +10,9 @@ from clastic.middleware import SimpleContextProcessor
 from schedule import Schedule, fm, ALL_LEGS
 
 from localtime import get_pacific_time
-from fetch import RAW_SCHED_DIR, get_newest_sched_dir
+from fetch import CUR_DIR, RAW_SCHED_DIR, get_newest_sched_dir
+
+TEMPLATE_DIR = os.path.join(CUR_DIR, 'templates')
 
 
 def home(schedule):
@@ -139,9 +143,13 @@ _sort_keys = {'cumulative': 'cumulative time, i.e., includes time in called func
 
 
 class ProfilerMiddleware(Middleware):
-    def __init__(self, sort_param_name='_prof_sort', get_param_name='_prof'):
+    def __init__(self,
+                 sort_param_name='_prof_sort',
+                 get_param_name='_prof',
+                 raise_exc=True):
         self.get_param_name = get_param_name
         self.sort_param_name = sort_param_name
+        self.raise_exc = raise_exc
 
     def request(self, next, request):
         if not request.args.get(self.get_param_name):
@@ -189,7 +197,7 @@ def create_app(schedule_dir, template_dir):
 sched_path = get_newest_sched_dir(RAW_SCHED_DIR)
 if not sched_path:
     raise Exception('no schedules found')
-application = create_app(sched_path, './templates')
+application = create_app(sched_path, TEMPLATE_DIR)
 
 
 if __name__ == '__main__':
