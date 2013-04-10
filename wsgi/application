@@ -1,0 +1,23 @@
+#!/usr/bin/python
+import os
+import sys
+from os.path import join as pjoin
+
+sys.path.insert(0, os.path.dirname(__file__) or '.')
+PY_VERSION = 'python-' + ('.'.join(map(str, sys.version_info[:2])))
+PY_DIR = pjoin(os.environ['HOME'], PY_VERSION)
+
+
+virtenv = pjoin(PY_DIR, 'virtenv')
+
+PY_CACHE = pjoin(virtenv, 'lib', PY_VERSION, 'site-packages')
+
+os.environ['PYTHON_EGG_CACHE'] = PY_CACHE
+activate = pjoin(virtenv, 'bin', 'activate_this.py')
+
+try:
+    execfile(activate, dict(__file__=activate))
+except IOError:
+    pass
+
+from etavta_wsgi import application
